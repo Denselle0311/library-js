@@ -18,7 +18,7 @@
         <h1>The Library</h1>
     </header>
     <div class="container">
-        <button class="add-book">+ Add Book</button>
+        <button class="add-book-btn">+ Add Book</button>
         <main id="book-wrapper">
             <div id="book">
                 <span id="more"><img src="/images/more.png" alt=""></span>
@@ -255,7 +255,55 @@
                 </span>
             </div>
         </main>
+        <div class="modal">
+            <div class="modal-header">
+                <h2>New Book</h2>
+                <button class="close-btn">close</button>
+            </div>
+            <form class="create-form">
+                <div class="input-group">
+                    <label for="title">
+                        Title
+                    </label>
+                    <input id="title" type="text" placeholder="Harry Potter and the Order of the Phoenix">
+                </div>
+                <div class="input-group">
+                    <label for="author">
+                        Author
+                    </label>
+                    <input id="author" type="text" placeholder="J. K. Rowling">
+                </div>
+                <div class="input-group">
+                    <label for="language">
+                        Language
+                    </label>
+                    <select name="language" id="language">
+                        <option value="english">English</option>
+                        <option value="japanes">Japanes</option>
+                        <option value="tagalog">tagalog</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="pages">
+                        How many pages?
+                    </label>
+                    <input id="pages" type="tel" placeholder="870">
+                </div>
+                <div class="input-group">
+                    <label for="current-pages">
+                        You've read so far?
+                    </label>
+                    <input id="current-pages" type="tel" placeholder="220" disabled>
+                    <label for="is-done">
+                        Done reading?
+                        <input id="is-done" type="checkbox" name="done-read" value="true">
+                    </label>
+                </div>
+            </form>
+            <button class="save-book-btn">SAVE BOOK</button>
+        </div>
     </div>
+    <div class="bg-dark"></div>
 </body>
 
 </html>
