@@ -1,9 +1,25 @@
+// @ts-nocheck
 const modal = document.querySelector('.modal');
 const bgDark = document.querySelector('.bg-dark');
+
+// button
 const addBookBtn = document.querySelector('.add-book-btn');
-const closeDialogBtn = document.querySelector('.close-btn');
-const currentPages = document.querySelector('#current-pages');
 const saveBtn = document.querySelector('.save-book-btn');
+const closeDialogBtn = document.querySelector('.close-btn');
+const moreBtn = document.querySelector('.more-btn');
+const bookEditBtn = document.querySelector('.book-edit-btn');
+const bookDeleteBtn = document.querySelector('.book-delete-btn');
+
+// input
+const titleInput = document.getElementById('title');
+const authorInput = document.getElementById('author');
+const pagesInput = document.getElementById('pages');
+const languageSelect = document.getElementById('language');
+const currentPageInput = document.getElementById('current-page');
+const isDoneReadCheckbox = document.getElementById('is-done');
+
+
+titleInput.addEventListener('input', e => console.log(e.target.value));
 
 class Book {
     constructor(
@@ -52,15 +68,16 @@ function openModal() {
 function closeModal() {
     modal?.classList.remove('active')
     bgDark?.classList.remove('active');
+    currentPageInput.disabled = false;
+    isDoneReadCheckbox.checked = false;
 }
 
 const Library = new LibraryClass();
 
-const isDone = document.querySelector('#is-done');
 
 // eventListener
-
-addBookBtn?.addEventListener('click', () => {
+addBookBtn?.addEventListener('click', e => {
+    e.preventDefault();
     openModal();
 });
 
@@ -76,6 +93,20 @@ bgDark?.addEventListener('click', () => {
     closeModal();
 })
 
-isDone?.addEventListener('click', e => {
-    currentPages.disabled = e.target.checked;
+isDoneReadCheckbox?.addEventListener('click', e => {
+    currentPageInput.disabled = e.target.checked;
 });
+
+moreBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    moreBtn.classList.toggle('active')
+});
+
+document.addEventListener('click', e => {
+    if(moreBtn.className.includes('active') != null) {
+        moreBtn.classList.remove('active')
+    }
+});
+
+bookEditBtn.addEventListener('click', () => console.log('edit'));
+bookDeleteBtn.addEventListener('click', () => console.log('delete'));

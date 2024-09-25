@@ -88,40 +88,57 @@
   }
   #book:hover {
     border-radius: 20px;
-    background-color: black;
-    color: white;
-  }
-  #book:hover .percentage {
-    fill:white;
   }
 
-
-  #more {
+  .more-btn {
+    position: relative;
     cursor: pointer;
     padding: 5px;
   }
-  #more img {
+  .more-btn img {
     height: 1rem;
     width: 1rem;
   }
+  .book-menu {
+    display: none;
+  }
+  .book-menu .book-edit-btn,
+  .book-menu .book-delete-btn {
+    font-weight: 600;
+    color: white;
+    padding: .5rem .7rem;
+  }
+  .book-menu .book-edit-btn:hover,
+  .book-menu .book-delete-btn:hover {
+    background: grey;
+    color: #000;
+  }
+  .more-btn.active .book-menu{
+    display: block;
+    background: black;
+    position: absolute;
+    text-align: center;
+    padding: .3em 0 .3em 0;
+    border-radius: 8px;
+  }
 
-  #content {
+  .content {
     display: flex;
     width: 100%;
     flex-direction: column;
     gap: 8px;
   }
-  #title {
+  .title {
     line-height: 1.3rem;
   }
 
-  #status {
+  .status {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
   }
-  #read-percentage {
+ .read-percentage {
     height: 50px;
     width: 50px;
     background-color: transparent;
@@ -214,16 +231,17 @@
   height: 100%;
 }
 
-#current-pages:disabled:hover {
+/* selecting previous label base on input if it is disabled */
+.current-page-label:has(~ :is([disabled])) {
+  color: grey;
+  text-decoration: line-through;
+}
+input[type=tel]:disabled:hover {
   cursor: not-allowed;
 }
 .input-group #is-done {
   height: 1.3rem;
   width: 1.3rem;
-}
-input[type="checkbox"] {
-  /* appearance: ; */
-  
 }
 
 .active.bg-dark {
@@ -244,6 +262,7 @@ input[type="checkbox"] {
   background: red;
   border: none;
   color: white;
+  padding: .3em .7em;
 }
 
 .save-book-btn {
