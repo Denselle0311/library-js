@@ -63,13 +63,14 @@
                     <label for="title">
                         Title
                     </label>
-                    <input id="title" type="text" placeholder="Harry Potter and the Order of the Phoenix" required>
+                    <input id="title" name="title" type="text" placeholder="Harry Potter and the Order of the Phoenix"
+                        oninvalid="invalidMsg(this);" oninput="invalidMsg(this);" required>
                 </div>
                 <div class="input-group">
                     <label for="author">
                         Author
                     </label>
-                    <input id="author" type="text" placeholder="J. K. Rowling">
+                    <input id="author" name="author" type="text" placeholder="J. K. Rowling">
                 </div>
                 <div class="input-group">
                     <label for="language">
@@ -85,16 +86,17 @@
                     <label for="pages">
                         How many pages?
                     </label>
-                    <input id="pages" type="number" placeholder="870" minlength="1" min="0" max="10000" required>
+                    <input id="pages" name="pages" type="number" placeholder="870" minlength="1" min="0" max="10000"
+                        required>
                 </div>
                 <div class="input-group">
                     <label class="current-page-label" for="current-page">
                         You've read so far?
                     </label>
-                    <input id="current-page" type="number" placeholder="220" min="0" max="10000">
+                    <input id="current-page" name="currentPage" type="number" placeholder="220" min="0" max="10000">
                     <label for="is-done">
                         Done reading?
-                        <input id="is-done" type="checkbox" name="done-read" value="true">
+                        <input id="is-done" name="doneReading" type="checkbox" name="done-read" value="true">
                     </label>
                 </div>
                 <div class="btn-con">

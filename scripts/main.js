@@ -3,6 +3,7 @@ const moreMenuIcon = '../images/more.png';
 const bookContainer = document.getElementById('book-container');
 const modal = document.querySelector('.modal');
 const bgDark = document.querySelector('.bg-dark');
+const form = document.querySelector('.create-form');
 
 // button
 const addBookBtn = document.querySelector('.add-book-btn');
@@ -39,6 +40,8 @@ class Book {
     }
 }
 
+let isBookTitleExist = false
+
 class LibraryClass {
     constructor() {
         this.books = [];
@@ -48,16 +51,16 @@ class LibraryClass {
         this.books.push(newBook);
     }
 
-    removeBook(toRemoveBook) {
-        this.books = this.books.filter(b => b.id != toRemoveBook.id);
+    removeBook(id) {
+        this.books = this.books.filter(b => b.id != id);
     }
 
-    getBook(findBook) {
-        return this.books.find(b => b.id == findBook.id);
+    getBook(id) {
+        return this.books.find(b => b.id == id);
     }
     
-    isInTheLibrary(findBook) {
-        return this.books.find(b => b.id == findBook.id);
+    isInTheLibrary(title) {
+        return this.books.some(b=> b.title == title);
     }
 }
 
@@ -72,13 +75,15 @@ function closeModal() {
     bgDark?.classList.remove('active');
     currentPageInput.disabled = false;
     isDoneReadCheckbox.checked = false;
+    form.reset();
 }
 
 const Library = new LibraryClass();
 
 function toPasCalCase(val) {
     if(!val) return null;
-    throw new Error('fix too many spaces')
+    console.log(val)
+    return val.trim().replace(/ +/g, ' ').split(' ').map(e=> e[0].toUpperCase() + e.slice(1)).join(' ');
 }
 
 function toggleSettings(ele) {
@@ -86,12 +91,46 @@ function toggleSettings(ele) {
     ele.classList.toggle('active');
 }
 
-function editBook() {
-    console.log('edit');
+function editBook(id) {
+    const book = Library.getBook(id);
+    selectedBookToForm(book);
 }
 
-function deleteBook() {
-    console.log('delete');
+function deleteBook(id) {
+    Library.removeBook(id);
+    renderBooks();
+}
+
+function invalidMsg(input) {
+    if(Library.isInTheLibrary(toPasCalCase(input.value))) {
+        input.setCustomValidity("Title already exist!");
+    } else {
+        input.setCustomValidity('');
+    }
+    return true;
+}
+
+function selectedBookToForm(book) {
+    [...form.elements].map(el => {
+        console.log(book[el.name], el.name);
+        switch(el.id) {
+            case 'title' : titleInput.value = book[el.name];
+                break;
+            case 'author' : authorInput.value = book[el.name];
+                break;
+            case 'language' : languageSelect.value = book[el.name].toLowerCase();
+                break;
+            case 'pages' : pagesInput.value = book[el.name];
+                break;
+            case 'current-page' : currentPageInput.value = book[el.name];
+                break;
+            case 'is-done' : isDoneReadCheckbox.checked = book[el.name];
+                break;
+            default:
+                Library.removeBook(book.id);
+                openModal();
+        }
+    });
 }
 
 function createBookElements(book) {
@@ -101,15 +140,15 @@ function createBookElements(book) {
     const moreImage = document.createElement('img');
     moreImage.src = moreMenuIcon;
     
-    const bookEditBtn = document.createElement('button');
+    const bookEditBtn = document.createElement('div');
     bookEditBtn.classList.add('book-edit-btn');
     bookEditBtn.appendChild(document.createTextNode('edit'));
-    bookEditBtn.addEventListener('click', editBook);
+    bookEditBtn.addEventListener('click', ()=> editBook(book.id));
     
-    const bookDeleteBtn = document.createElement('button');
+    const bookDeleteBtn = document.createElement('div');
     bookDeleteBtn.classList.add('book-delete-btn');
     bookDeleteBtn.appendChild(document.createTextNode('delete'));
-    bookDeleteBtn.addEventListener('click', deleteBook);
+    bookDeleteBtn.addEventListener('click', ()=> deleteBook(book.id));
     
     const bookMenuDiv = document.createElement('div');
     bookMenuDiv.classList.add('book-menu');
@@ -150,7 +189,7 @@ function createStatus(currentPage, pages) {
     spanStatus.classList.add('status');
     
     const spanPage = document.createElement('span');
-    spanPage.textContent = `${currentPage} / ${pages}`;
+    spanPage.textContent = `${currentPage} / ${pages} pages`;
 
     const buttonPer = document.createElement('button');
     buttonPer.classList.add('read-percentage');
@@ -208,6 +247,7 @@ function renderBooks() {
     const books = Library.books.map(b => createBookElements(b));
 
     console.log(books);
+    bookContainer.innerHTML = '';
     bookContainer.append(...books);
 }
 
@@ -216,8 +256,8 @@ function saveBook() {
     const author = toPasCalCase(authorInput.value) || 'No Author';
     const pages = pagesInput.value;
     const language = toPasCalCase(languageSelect.value);
-    const currentPage = currentPageInput.value || 0;
     const isDoneRead = isDoneReadCheckbox.checked;
+    const currentPage = isDoneRead ? pages : currentPageInput.value > pages ? pages : currentPageInput.value || 0;
     
     Library.addBook(new Book(title, author, pages, language, currentPage, isDoneRead));
     console.log(Library.books);
@@ -238,14 +278,16 @@ addBookBtn?.addEventListener('click', e => {
     openModal();
 });
 
-document.querySelector('.create-form').addEventListener('submit', e => {
+
+form.addEventListener('submit', e => {
     e.preventDefault();
+
     saveBook();
-    closeModal();
+    closeModal(e);
     e.target.reset();
 })
 
-closeDialogBtn?.addEventListener('click', () => { 
+closeDialogBtn?.addEventListener('click', () => {
     closeModal();
 });
 
