@@ -9,9 +9,6 @@ const form = document.querySelector('.create-form');
 const addBookBtn = document.querySelector('.add-book-btn');
 const saveBtn = document.querySelector('.save-book-btn');
 const closeDialogBtn = document.querySelector('.close-btn');
-const moreBtn = document.querySelector('.more-btn');
-const bookEditBtn = document.querySelector('.book-edit-btn');
-const bookDeleteBtn = document.querySelector('.book-delete-btn');
 
 // input
 const titleInput = document.getElementById('title');
@@ -78,7 +75,11 @@ function closeModal() {
     form.reset();
 }
 
-const Library = new LibraryClass();
+const Library = localStorage.getItem('library') ?? new LibraryClass();
+
+function updateLocalStorage() {
+
+}
 
 function toPasCalCase(val) {
     if(!val) return null;
@@ -264,20 +265,11 @@ function saveBook() {
     renderBooks();
 }
 
-// inputListener
-// titleInput.addEventListener('input', validateInputs);
-// authorInput.addEventListener('input', validateInputs);
-// pagesInput.addEventListener('input', validateInputs);
-// languageSelect.addEventListener('change', validateInputs);
-// currentPageInput.addEventListener('input', validateInputs);
-// isDoneReadCheckbox.addEventListener('change', validateInputs);
-
 // eventListener
 addBookBtn?.addEventListener('click', e => {
     e.preventDefault();
     openModal();
 });
-
 
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -299,16 +291,13 @@ isDoneReadCheckbox?.addEventListener('click', e => {
     currentPageInput.disabled = e.target.checked;
 });
 
-moreBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    moreBtn.classList.toggle('active')
-});
-
-bookEditBtn.addEventListener('click', () => console.log('edit'));
-bookDeleteBtn.addEventListener('click', () => console.log('delete'));
-
-document.addEventListener('click', e => {
-    if(moreBtn.className.includes('active') != null) {
-        moreBtn.classList.remove('active')
-    }
+bookContainer.addEventListener('click', e => {
+    const moreBtns = [...bookContainer.querySelectorAll('.more-btn')];
+    
+    moreBtns.forEach(b => {
+        if(b.className.includes('active') && !e.target.closest('.more-btn')) {
+            b.classList.remove('active')
+            console.log('remove')
+        }
+    });
 });
