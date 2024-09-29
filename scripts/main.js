@@ -1,5 +1,5 @@
 // @ts-nocheck
-const moreMenuIcon = '../images/more.png';
+const moreMenuIcon = 'images/more.png';
 const bookContainer = document.getElementById('book-container');
 const modal = document.querySelector('.modal');
 const bgDark = document.querySelector('.bg-dark');
